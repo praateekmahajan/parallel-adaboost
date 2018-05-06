@@ -10,11 +10,14 @@ using namespace std;
 
 struct Decision_Direction_Error
 {
+    // Returned by get_error_curr_feature_val, contains the threshold error for that decision point.
     double error = INT_MAX;
     int direction = 1;
 };
 struct Decision_Function
 {
+    // Returned by get_feature_threshold_curr_feature with feature_index = -1
+    //
     int feature_index = -1;
     double error = INT_MAX;
     double threshold=INT_MIN;
@@ -25,6 +28,7 @@ struct Decision_Function
 
 struct Decision_Stump
 {
+    // The decision stump of each weak classifier.
     Decision_Function decision_function;
     double alpha_t;
 
@@ -33,6 +37,7 @@ struct Decision_Stump
 
 vector<vector<double> > transpose(vector<vector<double> > ds)
 {
+    //  Transposes the data set, done so that slicing feature wise is easier
     vector<vector<double> > tr (ds[0].size(),vector<double>(ds.size(),0));
     for (int i = 0; i < ds.size(); ++i) {
         for (int j = 0; j < ds[i].size(); ++j) {
@@ -45,6 +50,7 @@ vector<vector<double> > transpose(vector<vector<double> > ds)
 
 vector<vector<double> > get_unique_feature_vals(vector<vector<double> > &feature_vals)
 {
+    // Returns the unique midpoint threshold 2d vector for each feature.
     vector<vector<double> > solution;
     for(int i=0;i<feature_vals.size();++i) {
         set<double> s(feature_vals[i].begin(), feature_vals[i].end());
@@ -68,6 +74,7 @@ vector<vector<double> > get_unique_feature_vals(vector<vector<double> > &feature
 double update_weights(vector<int> &labels, double curr_error, vector<double> & weights,
                       vector<double> & feature_vals,double threshold,int direction)
 {
+    // Updates the weight
     double alpha_t = 0.5  * log((1-curr_error)/(curr_error));
 
     double weights_sum = 0;
@@ -100,7 +107,7 @@ double update_weights(vector<int> &labels, double curr_error, vector<double> & w
 Decision_Direction_Error get_error_curr_feature_val(vector<int> &labels,vector<double> & weights,vector<double> & feature_vals, double split_val)
 {
 
-
+    // Returns the error for the threshpold value (split_Val ) aswell as decision direction
     double curr_error_1 = 0;
     double curr_error_2 = 0;
 
@@ -141,6 +148,7 @@ Decision_Direction_Error get_error_curr_feature_val(vector<int> &labels,vector<d
 Decision_Function get_feature_threshold_curr_feature(vector<int> &labels, vector<double> &weights,
                                                      vector<double> &feature_vals,vector<double> &feature_thresholds)
 {
+    // Retuens the best threshold for the current feature vals
     Decision_Function best_feature_threshold;
 
 
@@ -166,6 +174,7 @@ Decision_Function get_feature_threshold_curr_feature(vector<int> &labels, vector
 Decision_Stump get_best_feature_stump(vector<int> &labels, vector<vector<double> > &feature_vals,
                                       vector<double> &weights,vector<vector<double> > &unique_feature_vals)
 {
+    // Returns the best feature stump for the current set of weights
     Decision_Stump best_feature_stump;
     //vector<vector<double> > unique_feature_vals = get_unique_feature_vals(feature_vals);
     //vector<vector<double> > unique_feature_vals = feature_vals;
@@ -201,7 +210,7 @@ Decision_Stump get_best_feature_stump(vector<int> &labels, vector<vector<double>
 vector<Decision_Stump> fit_weak_classifers(vector<int> &labels, vector<vector<double> > &ds_t, int t,
                                   vector<vector<double> > &unique_feature_vals)
 {
-
+    // fit function calle dby adaboost
     vector<Decision_Stump> weak_classifiers;
 
     vector<double>weights(labels.size(),1.0/labels.size());
@@ -227,6 +236,7 @@ public:
         void fit(vector<vector<double> > &X,vector<int> &labels, int t)
         {
             vector<vector<double> > ds_t = transpose(X);
+            // The threshold values as cached in the unique_feature_vals
             vector<vector<double> > unique_feature_vals = get_unique_feature_vals(ds_t);
 
             weak_classifiers = fit_weak_classifers(labels, ds_t, t, unique_feature_vals);
@@ -239,6 +249,7 @@ public:
             cout<<"Fit Complete\n";
         }
         vector<int> predict(vector<vector<double> > &X) {
+            // Predict function
 
             vector<int> pred_labels(X.size(),1);
             cout<<"Started Prediction\n";
@@ -279,17 +290,3 @@ public:
 #endif
 
 
-
-//def create_split(self, dataset, index, value, weight):
-//left = []
-//leftweight = []
-//right = []
-//rightweight = []
-//for i, point in enumerate(dataset):
-//if point[index] > value:
-//right.append(point)
-//rightweight.append(weight[i])
-//else:
-//left.append(point)
-//leftweight.append(weight[i])
-//return ((left, right), (leftweight, rightweight))

@@ -21,7 +21,7 @@ int main() {
 
     vector<vector<double> > X;
     vector<int> labels;
-
+    // The data file, without labels and first row.
     ifstream data_file("mnist_data.csv");
     string line;
 
@@ -42,7 +42,7 @@ int main() {
     }
     X.pop_back();
 
-
+    // Label file, expects, 1 and -1 as postive and negative labels
     ifstream label_file("mnist_label.csv");
 
 
