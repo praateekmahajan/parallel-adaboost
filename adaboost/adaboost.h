@@ -107,7 +107,7 @@ double update_weights(vector<int> &labels, double curr_error, vector<double> & w
 Decision_Direction_Error get_error_curr_feature_val(vector<int> &labels,vector<double> & weights,vector<double> & feature_vals, double split_val)
 {
 
-    // Returns the error for the threshpold value (split_Val ) aswell as decision direction
+    // Returns the error for the threshpold value (split_Val ) as well as decision direction
     double curr_error_1 = 0;
     double curr_error_2 = 0;
 
@@ -117,13 +117,13 @@ Decision_Direction_Error get_error_curr_feature_val(vector<int> &labels,vector<d
         //cout<<" "<<weights[i]<<" ";
         if ( ((feature_vals[i]<=split_val) and (labels[i]!=-1)) or ((feature_vals[i]>split_val) and (labels[i]!=1)))
         {
-            curr_error_1+=weights[i];
+            curr_error_1 += weights[i];
         }
     }
 
     for(int i=0;i<weights.size();++i)
     {
-        //cout<<" "<<weights[i]<<" ";
+        //cout << " " << weights[i] << " ";
         if ( ((feature_vals[i]>=split_val) and (labels[i]!=-1)) or ((feature_vals[i]<split_val) and (labels[i]!=1)))
         {
             curr_error_2+=weights[i];
@@ -131,7 +131,7 @@ Decision_Direction_Error get_error_curr_feature_val(vector<int> &labels,vector<d
     }
     // cout<<"Curr Error in get_error_curr_feature_val "<<curr_error<<" for split_val "<<split_val<<"\n";
     Decision_Direction_Error sol;
-    if(curr_error_2>curr_error_1) {
+    if(curr_error_2 > curr_error_1) {
         sol.error = curr_error_1;
         sol.direction = 1;
     } else
@@ -192,7 +192,7 @@ Decision_Stump get_best_feature_stump(vector<int> &labels, vector<vector<double>
      double feature_threshold =  best_feature_stump.decision_function.threshold;
      double error = best_feature_stump.decision_function.error;
 
-    if (best_feature_stump.decision_function.error >=0.0005)
+    if (best_feature_stump.decision_function.error >= 0.0005)
         best_feature_stump.alpha_t = update_weights(labels,error,weights,feature_vals[feature_index],feature_threshold, direction);
 
 
