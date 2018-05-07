@@ -18,7 +18,6 @@ struct Decision_Direction_Error {
 };
 struct Decision_Function {
     // Returned by get_feature_threshold_curr_feature with feature_index = -1
-    //
     int feature_index = -1;
     double error = INT_MAX;
     double threshold = INT_MIN;
