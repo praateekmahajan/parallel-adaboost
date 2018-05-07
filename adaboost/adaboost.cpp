@@ -11,6 +11,7 @@
 
 using namespace std;
 
+FILENAME = "../data/temp";
 int timeval_subtract (struct timeval * result, struct timeval * x, struct timeval * y)
 {
     /* Perform the carry for the later subtraction by updating y. */
@@ -72,7 +73,7 @@ int main(int argc, char** argv) {
     vector<vector<double> > X;
     vector<int> labels;
     // The data file, without labels and first row.
-    ifstream data_file("mnist_data.csv");
+    ifstream data_file(FILENAME + "_data.csv");
     string line;
 
     while (data_file.good()) {
@@ -93,7 +94,7 @@ int main(int argc, char** argv) {
     X.pop_back();
 
     // Label file, expects, 1 and -1 as postive and negative labels
-    ifstream label_file("mnist_label.csv");
+    ifstream label_file(FILENAME + "_label.csv");
 
 
     while (label_file.good()) {
