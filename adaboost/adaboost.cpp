@@ -69,7 +69,6 @@ int main(int argc, char** argv) {
     struct timeval ta, tb, tresult;
 
     /* get initial time */
-    gettimeofday ( &ta, NULL );
 
     omp_set_num_threads(num_threads);
 
@@ -151,10 +150,14 @@ int main(int argc, char** argv) {
 //        cout<<" "<<labels[i]<<"\n";
 //    }
 
+    // Let's time only the predict since that is what we are focussing on!
+    gettimeofday ( &ta, NULL );
     AdaBoost clf;
     clf.fit(X,labels,t);
     vector<int> predictions = clf.predict(X);
-    cout<<"\n";
+    gettimeofday ( &tb, NULL );
+    timeval_subtract ( &tresult, &tb, &ta );
+    
     double acc;
     for(int i=0;i<predictions.size();++i)
     {
@@ -167,10 +170,6 @@ int main(int argc, char** argv) {
     //cout<<"\n";
 
     /* get initial time */
-    gettimeofday ( &tb, NULL );
-
-    timeval_subtract ( &tresult, &tb, &ta );
-
     printf ("%s\t%s\t%d\t%d\t%lu\t%lu\n", num_egs.c_str(), num_ft.c_str(), num_threads, t, tresult.tv_sec, tresult.tv_usec);
 
     return 0;

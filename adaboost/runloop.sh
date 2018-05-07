@@ -7,8 +7,8 @@ do
 			for (( j = 10; j < 10001; j = j * 10)); do
 				for (( h = 5; h < 161; h = h * 2)); do
 					#python ../create-dataset.py "$i" "$j"
-					./a.out "$h" "$k" "$i" "$j" >> output.txt
 					#./a.out "$k" >> output.txt
+					./a.out "$k" "$h" "$i" "$j" >> output.txt
 				done
 			done
 		done
