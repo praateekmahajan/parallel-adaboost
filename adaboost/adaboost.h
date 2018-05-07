@@ -158,20 +158,20 @@ public:
         vector<vector<double> > unique_feature_vals = get_feature_split_vals(ds_t);
 
         weak_classifiers = fit_weak_classifiers(labels, ds_t, t, unique_feature_vals);
-        for (int i = 0; i < weak_classifiers.size(); ++i) {
-            cout << "\n Weak Classifier [" << i << "] index " << weak_classifiers[i].decision_function.feature_index
-                 << " Threshold "\
- << weak_classifiers[i].decision_function.threshold << " ";
-            cout << "Alpha_t " << weak_classifiers[i].alpha_t;
-        }
-        cout << "\nFit Complete\n";
+//        for (int i = 0; i < weak_classifiers.size(); ++i) {
+//            cout << "\n Weak Classifier [" << i << "] index " << weak_classifiers[i].decision_function.feature_index
+//                 << " Threshold "\
+// << weak_classifiers[i].decision_function.threshold << " ";
+//            cout << "Alpha_t " << weak_classifiers[i].alpha_t;
+//        }
+//        cout << "\nFit Complete\n";
     }
 
     vector<int> predict(vector<vector<double> > &X) {
         // Predict function
 
         vector<int> pred_labels(X.size(), 1);
-        cout << "Started Prediction\n";
+        // cout << "Started Prediction\n";
         for (int i = 0; i < X.size(); ++i) {
             double negative_label_weight = 0;
             double positive_label_weight = 0;
@@ -236,7 +236,6 @@ public:
 
         vector<double> weights(labels.size(), 1.0 / labels.size());
 
-        cout << "\n";
         for (int i = 0; i < t; ++i) {
             Decision_Stump curr_decision_stump = dec_stump.fit(labels, ds_t, weights, unique_feature_vals);
 
@@ -251,8 +250,8 @@ public:
             update_weights(curr_decision_stump, labels, weights, ds_t[curr_decision_stump.decision_function.feature_index]);
             weak_classifiers.push_back(curr_decision_stump);
 
-            cout << "\n Error is " << curr_decision_stump.decision_function.error << " Alpha t "
-                 << curr_decision_stump.alpha_t;
+//            cout << "\n Error is " << curr_decision_stump.decision_function.error << " Alpha t "
+//                 << curr_decision_stump.alpha_t;
 
         }
 

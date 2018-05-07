@@ -39,13 +39,13 @@ int timeval_subtract (struct timeval * result, struct timeval * x, struct timeva
 int main(int argc, char** argv) {
     //cout << "Hello, World!" ;
 
-    cout << "You have entered " << argc
-         << " arguments:" << "\n";
+//    cout << "You have entered " << argc
+//         << " arguments:" << "\n";
 
     int t;
 
-    for (int i = 0; i < argc; ++i)
-        cout << argv[i] << "\n";
+//    for (int i = 0; i < argc; ++i)
+//        cout << argv[i] << "\n";
 
     if(argc==3)
         t=atoi(argv[2]);
@@ -152,7 +152,7 @@ int main(int argc, char** argv) {
             acc++;
         }
     }
-    cout<<"Accuracy is "<<acc/predictions.size();
+    cout<<"\nAccuracy "<<acc/predictions.size();
     cout<<"\n";
 
     /* get initial time */
@@ -160,7 +160,7 @@ int main(int argc, char** argv) {
 
     timeval_subtract ( &tresult, &tb, &ta );
 
-    printf ("Adaboost took %lu seconds and %lu microseconds num_threads %d \n", tresult.tv_sec, tresult.tv_usec, num_threads );
+    printf ("%lu\t%lu\t%d\n", tresult.tv_sec, tresult.tv_usec, num_threads );
 
     return 0;
 }
