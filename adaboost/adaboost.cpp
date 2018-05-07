@@ -66,7 +66,7 @@ int main(int argc, char** argv) {
     vector<vector<double> > X;
     vector<int> labels;
     // The data file, without labels and first row.
-    ifstream data_file("mnist_data.csv");
+    ifstream data_file(x + "_data.csv");
     string line;
 
     while (data_file.good()) {
