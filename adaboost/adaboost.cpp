@@ -1,5 +1,5 @@
 #include "adaboost.h"
-
+#include <ctime>
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -15,6 +15,12 @@ int main() {
 
 
     int t=5;
+    std::clock_t start;
+    double duration;
+    omp_set_num_threads(4);
+
+    start = std::clock();
+
 
     // vector<vector<double> > X(ds_len, vector<double>(ds_feat, 0));
     //vector<int> labels(ds_len,-1);
@@ -104,6 +110,9 @@ int main() {
     }
     cout<<"Accuracy is "<<acc/predictions.size();
     cout<<"\n";
+
+    duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
+    std::cout<<"Time Taken "<< duration <<'\n';
 
 
     return 0;
