@@ -121,23 +121,14 @@ Decision_Direction_Error get_error_curr_feature_val(vector<int> &labels,vector<d
         }
     }
 
-    for(int i=0;i<weights.size();++i)
-    {
-        //cout << " " << weights[i] << " ";
-        if ( ((feature_vals[i]>=split_val) and (labels[i]!=-1)) or ((feature_vals[i]<split_val) and (labels[i]!=1)))
-        {
-            curr_error_2+=weights[i];
-        }
-    }
-    // cout<<"Curr Error in get_error_curr_feature_val "<<curr_error<<" for split_val "<<split_val<<"\n";
     Decision_Direction_Error sol;
-    if(curr_error_2 > curr_error_1) {
-        sol.error = curr_error_1;
-        sol.direction = 1;
+    if(curr_error_1 > 0.5) {
+        sol.error = 1 - curr_error_1;
+        sol.direction = -1;
     } else
     {
-        sol.error = curr_error_2;
-        sol.direction = -1;
+        sol.error = curr_error_1;
+        sol.direction = 1;
 
     }
     return sol;
@@ -162,7 +153,7 @@ Decision_Function get_feature_threshold_curr_feature(vector<int> &labels, vector
             // cout<<"feature thresholds"<<feature_thresholds[i]<<" \n";
 
             best_feature_threshold.error = curr_error.error;
-            best_feature_threshold.threshold=feature_thresholds[i];
+            best_feature_threshold.threshold = feature_thresholds[i];
             best_feature_threshold.feature_index = -1;
             best_feature_threshold.direction = curr_error.direction;
 
