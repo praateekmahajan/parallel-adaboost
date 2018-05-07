@@ -151,7 +151,6 @@ class AdaBoost {
 
     vector<Decision_Stump> weak_classifiers;
 public:
-
     void fit(vector<vector<double> > &X, vector<int> &labels, int t) {
         vector<vector<double> > ds_t = transpose(X);
         // The threshold values as cached in the unique_feature_vals
@@ -203,24 +202,25 @@ public:
         return pred_labels;
     }
 
-
     vector<vector<double> > get_feature_split_vals(vector<vector<double> > &feature_vals) {
         // Returns the unique midpoint threshold 2d vector for each feature.
         vector<vector<double> > solution;
-        for (int i = 0; i < feature_vals.size(); ++i) {
-            set<double> s(feature_vals[i].begin(), feature_vals[i].end());
-            vector<double> v(s.begin(), s.end());
+        int i, j, k;
+        for (i = 0; i < feature_vals.size(); ++i) {
+            vector<double> v(feature_vals[i].begin(), feature_vals[i].end());
             sort(v.begin(), v.end());
-
-            vector<double> midpoint(v.size() + 1, -1);
-            midpoint[0]=(v[0]-1);
-            for (int i = 0; i < v.size() - 1; ++i) {
-                midpoint[i+1] = ((v[i + 1] + v[i]) / 2);
-
+            vector<double> midpoint;
+            midpoint.push_back(v[0]-1);
+            j = 0;
+            while (j < v.size() - 1){
+                k = j + 1;
+                while(v[j] == v[k] and k < v.size() - 1){
+                    k += 1;
+                }
+                midpoint.push_back((v[j] + v[k]) / 2);
+                j = k;
             }
-            midpoint[v.size()]=v[i]+1;
             solution.push_back(midpoint);
-
         }
         return solution;
 

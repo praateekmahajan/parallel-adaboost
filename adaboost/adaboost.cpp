@@ -37,8 +37,6 @@ int timeval_subtract (struct timeval * result, struct timeval * x, struct timeva
 
 
 int main(int argc, char** argv) {
-//    for (int i = 0; i < argc; ++i)
-//        cout << argv[i] << "\n";
 
     int num_threads =1;
     if(argc!=0)
@@ -71,11 +69,6 @@ int main(int argc, char** argv) {
     /* get initial time */
 
     omp_set_num_threads(num_threads);
-
-
-
-    // vector<vector<double> > X(ds_len, vector<double>(ds_feat, 0));
-    //vector<int> labels(ds_len,-1);
 
     vector<vector<double> > X;
     vector<int> labels;
@@ -116,48 +109,16 @@ int main(int argc, char** argv) {
     }
 
 
-    // etc.
-//        std::vector<std::string> vec;
-//        split(vec, line, is_any_of(delimeter));
-//        dataList.push_back(vec);
-
-
-//    X[0][0]=10; labels[0] = 1;
-//    X[1][0]=30; labels[1] = 1;
-//    X[2][0]=40; labels[2] = -1;
-//    X[3][0]=60; labels[3] = -1;
-//    X[4][0]=90; labels[4] = 1;
-//
-//    X[0][1]=10;
-//    X[1][1]=30;
-//    X[2][1]=40;
-//    X[3][1]=60;
-//    X[4][1]=90;
-//
-//    X[5][0]=1.3; labels[5] = -1;
-//    X[6][0]=1.4; labels[6] = -1;
-//    X[7][0]=1.5; labels[7] = -1;
-//    X[8][0]=1.6; labels[8] = 1;
-//    X[9][0]=1.7; labels[9] = -1;
-//
-//
-//    cout<<X.size();
-//    for (int i = 0; i < X.size(); i++) {
-//        cout<<i<<" ";
-//        for (int j = 0; j < X[i].size(); j++) {
-//            cout << X[i][j] << " ";
-//        }
-//        cout<<" "<<labels[i]<<"\n";
-//    }
 
     // Let's time only the predict since that is what we are focussing on!
     gettimeofday ( &ta, NULL );
     AdaBoost clf;
     clf.fit(X,labels,t);
-    vector<int> predictions = clf.predict(X);
     gettimeofday ( &tb, NULL );
     timeval_subtract ( &tresult, &tb, &ta );
-    
+
+
+    vector<int> predictions = clf.predict(X);
     double acc;
     for(int i=0;i<predictions.size();++i)
     {
@@ -166,8 +127,8 @@ int main(int argc, char** argv) {
             acc++;
         }
     }
-    //cout<<"\nAccuracy "<<acc/predictions.size();
-    //cout<<"\n";
+    cout<<"\nAccuracy "<<acc/predictions.size();
+    cout<<"\n";
 
     /* get initial time */
     printf ("%s\t%s\t%d\t%d\t%lu\t%lu\n", num_egs.c_str(), num_ft.c_str(), num_threads, t, tresult.tv_sec, tresult.tv_usec);
