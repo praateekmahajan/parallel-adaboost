@@ -11,7 +11,7 @@
 
 using namespace std;
 
-string FILENAME = "../data/temp";
+string FILENAME = "../data/100_200";
 int timeval_subtract (struct timeval * result, struct timeval * x, struct timeval * y)
 {
     /* Perform the carry for the later subtraction by updating y. */
