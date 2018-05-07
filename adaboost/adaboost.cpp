@@ -10,14 +10,23 @@
 using namespace std;
 
 
-int main() {
+int main(int argc, char** argv) {
     //cout << "Hello, World!" ;
 
+    cout << "You have entered " << argc
+         << " arguments:" << "\n";
+
+    for (int i = 0; i < argc; ++i)
+        cout << argv[i] << "\n";
 
     int t=5;
-    std::clock_t start;
+    int num_threads =1;
+    if(argc!=0)
+        num_threads = atoi(argv[1]);
+    std::clock_t start= std::clock();
     double duration;
-    omp_set_num_threads(4);
+
+    omp_set_num_threads(num_threads);
 
     start = std::clock();
 
