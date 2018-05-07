@@ -3,8 +3,8 @@
 
 #include <iostream>
 #include <vector>
-//#include <omp.h>
-#include <limits>
+#include <omp.h>
+#include <climits>
 #include <algorithm>
 #include <math.h>
 #include <set>
@@ -125,10 +125,10 @@ public:
         Decision_Function best_decision_function;
         //vector<vector<double> > unique_feature_vals = get_unique_feature_vals(feature_vals);
         //vector<vector<double> > unique_feature_vals = feature_vals;
-        // #pragma omp declare reduction \
-         (rwz:int:omp_out=my_min(omp_out,omp_in))
+        #pragma omp declare reduction \
+        (rwz:Decision_Function:omp_out=my_min(omp_out,omp_in))
 
-        // #pragma omp parallel for reduction(rwz:m)
+        #pragma omp parallel for reduction(rwz:best_decision_function)
         for (int i = 0; i < feature_vals.size(); ++i) {
             Decision_Function curr_decision_function = get_feature_threshold_curr_feature(labels, weights,
                                                                                           feature_vals[i],
@@ -229,7 +229,7 @@ public:
 
 
     vector<Decision_Stump> fit_weak_classifiers(vector<int> &labels, vector<vector<double> > &ds_t, int t, vector<vector<double> > &unique_feature_vals) {
-        // fit function calle dby adaboost
+        // fit function called by adaboost
         DecisionStump dec_stump;
 
         vector<Decision_Stump> weak_classifiers;
