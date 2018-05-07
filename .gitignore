@@ -1,4 +1,4 @@
-*data/*
+c++/data/*
 !*.gitkeep
 *.pyc
 .ipynb_checkpoints
