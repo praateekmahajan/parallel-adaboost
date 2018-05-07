@@ -42,10 +42,16 @@ int main(int argc, char** argv) {
     cout << "You have entered " << argc
          << " arguments:" << "\n";
 
+    int t;
+
     for (int i = 0; i < argc; ++i)
         cout << argv[i] << "\n";
 
-    int t=5;
+    if(argc==3)
+        t=atoi(argv[2]);
+    else
+        t = 2;
+
     int num_threads =1;
     if(argc!=0)
         num_threads = atoi(argv[1]);
