@@ -1,6 +1,8 @@
+data
+*.pyc
 .ipynb_checkpoints
 .idea
-
+output.txt
 .DS_Store
 adaboost/.DS_Store
 adaboost/CMakeLists.txt

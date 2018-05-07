@@ -11,6 +11,7 @@
 
 using namespace std;
 
+string FILENAME = "../data/temp";
 int timeval_subtract (struct timeval * result, struct timeval * x, struct timeval * y)
 {
     /* Perform the carry for the later subtraction by updating y. */
@@ -39,13 +40,19 @@ int timeval_subtract (struct timeval * result, struct timeval * x, struct timeva
 int main(int argc, char** argv) {
     //cout << "Hello, World!" ;
 
-    cout << "You have entered " << argc
-         << " arguments:" << "\n";
+//    cout << "You have entered " << argc
+//         << " arguments:" << "\n";
 
-    for (int i = 0; i < argc; ++i)
-        cout << argv[i] << "\n";
+    int t;
 
-    int t=5;
+//    for (int i = 0; i < argc; ++i)
+//        cout << argv[i] << "\n";
+
+    if(argc==3)
+        t=atoi(argv[2]);
+    else
+        t = 2;
+
     int num_threads =1;
     if(argc!=0)
         num_threads = atoi(argv[1]);
@@ -66,7 +73,8 @@ int main(int argc, char** argv) {
     vector<vector<double> > X;
     vector<int> labels;
     // The data file, without labels and first row.
-    ifstream data_file(x + "_data.csv");
+    string dataf = FILENAME + "_data.csv");
+    ifstream data_file(dataf);
     string line;
 
     while (data_file.good()) {
@@ -87,7 +95,8 @@ int main(int argc, char** argv) {
     X.pop_back();
 
     // Label file, expects, 1 and -1 as postive and negative labels
-    ifstream label_file("mnist_label.csv");
+    string label = FILENAME + "_label.csv";
+    ifstream label_file(label);
 
 
     while (label_file.good()) {
@@ -146,7 +155,7 @@ int main(int argc, char** argv) {
             acc++;
         }
     }
-    cout<<"Accuracy is "<<acc/predictions.size();
+    cout<<"\nAccuracy "<<acc/predictions.size();
     cout<<"\n";
 
     /* get initial time */
@@ -154,7 +163,7 @@ int main(int argc, char** argv) {
 
     timeval_subtract ( &tresult, &tb, &ta );
 
-    printf ("Adaboost took %lu seconds and %lu microseconds num_threads %d \n", tresult.tv_sec, tresult.tv_usec, num_threads );
+    printf ("%lu\t%lu\t%d\n", tresult.tv_sec, tresult.tv_usec, num_threads );
 
     return 0;
 }
