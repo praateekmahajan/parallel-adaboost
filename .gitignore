@@ -1,2 +1,14 @@
 .ipynb_checkpoints
 .idea
+
+.DS_Store
+adaboost/.DS_Store
+adaboost/CMakeLists.txt
+adaboost/Untitled.ipynb
+adaboost/a.out
+adaboost/cmake-build-debug/
+adaboost/iris_data.csv
+adaboost/iris_label.csv
+data_analysis.ipynb
+iris.csv
+
