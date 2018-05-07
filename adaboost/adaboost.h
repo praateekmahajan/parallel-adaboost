@@ -3,7 +3,8 @@
 
 #include <iostream>
 #include <vector>
-#include <climits>
+//#include <omp.h>
+#include <limits>
 #include <algorithm>
 #include <math.h>
 #include <set>
@@ -37,8 +38,11 @@ Decision_Function my_min(Decision_Function curr_decision_function,Decision_Funct
 {
     if (curr_decision_function.error < in_decision_function.error) {
         return curr_decision_function;
+    } else {
+        return in_decision_function;
     }
 }
+
 vector<vector<double> > transpose(vector<vector<double> > ds) {
     //  Transposes the data set, done so that slicing feature wise is easier
     vector<vector<double> > tr(ds[0].size(), vector<double>(ds.size(), 0));
@@ -114,27 +118,28 @@ public:
 
 
 
-
-
     Decision_Stump fit(vector<int> &labels, vector<vector<double> > &feature_vals,
                        vector<double> &weights, vector<vector<double> > &unique_feature_vals) {
         // Returns the best feature stump for the current set of weights
         Decision_Stump best_feature_stump;
-
         Decision_Function best_decision_function;
+        //vector<vector<double> > unique_feature_vals = get_unique_feature_vals(feature_vals);
+        //vector<vector<double> > unique_feature_vals = feature_vals;
+        // #pragma omp declare reduction \
+         (rwz:int:omp_out=my_min(omp_out,omp_in))
 
-
-        #pragma omp declare reduction \
-          (rwz:int:omp_out=my_min(omp_out,omp_in)) 
+        // #pragma omp parallel for reduction(rwz:m)
         for (int i = 0; i < feature_vals.size(); ++i) {
             Decision_Function curr_decision_function = get_feature_threshold_curr_feature(labels, weights,
                                                                                           feature_vals[i],
                                                                                           unique_feature_vals[i],i);
 
+
             best_decision_function = my_min(best_decision_function,curr_decision_function);
 
         }
 
+        best_feature_stump.decision_function=best_decision_function;
         return best_feature_stump;
 
     }
@@ -207,11 +212,13 @@ public:
             vector<double> v(s.begin(), s.end());
             sort(v.begin(), v.end());
 
-            vector<double> midpoint(v.size() - 1, -1);
+            vector<double> midpoint(v.size() + 1, -1);
+            midpoint[0]=(v[0]-1);
             for (int i = 0; i < v.size() - 1; ++i) {
-                midpoint[i] = ((v[i + 1] + v[i]) / 2);
+                midpoint[i+1] = ((v[i + 1] + v[i]) / 2);
 
             }
+            midpoint[v.size()]=v[i]+1;
             solution.push_back(midpoint);
 
         }
@@ -221,8 +228,7 @@ public:
     }
 
 
-    vector<Decision_Stump> fit_weak_classifiers(vector<int> &labels, vector<vector<double> > &ds_t, int t,
-                                                vector<vector<double> > &unique_feature_vals) {
+    vector<Decision_Stump> fit_weak_classifiers(vector<int> &labels, vector<vector<double> > &ds_t, int t, vector<vector<double> > &unique_feature_vals) {
         // fit function calle dby adaboost
         DecisionStump dec_stump;
 
@@ -254,8 +260,7 @@ public:
 
     }
 
-    double
-    update_weights(Decision_Stump ds, vector<int> &labels, vector<double> &weights, vector<double> &feature_vals) {
+    double update_weights(Decision_Stump ds, vector<int> &labels, vector<double> &weights, vector<double> &feature_vals) {
         // Updates the weight
         double alpha_t = ds.alpha_t;
         double weights_sum = 0;
