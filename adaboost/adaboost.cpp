@@ -63,7 +63,7 @@ int main(int argc, char** argv) {
         num_ft = "20";	     
     }
 
-    string FILENAME = "../data/" + num_egs + "_" + num_ft;
+    string FILENAME = "data/" + num_egs + "_" + num_ft;
 
     /* Variables for timing */
     struct timeval ta, tb, tresult;
