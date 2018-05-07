@@ -90,7 +90,7 @@ int main() {
 //        cout<<" "<<labels[i]<<"\n";
 //    }
 
-    Adaoost clf;
+    AdaBoost clf;
     clf.fit(X,labels,t);
     vector<int> predictions = clf.predict(X);
     cout<<"\n";
