@@ -1,5 +1,5 @@
 #include "adaboost.h"
-
+#include<omp.h>
 #include <iostream>
 #include <fstream>
 #include <vector>

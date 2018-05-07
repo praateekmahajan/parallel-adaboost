@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <vector>
-#include <limits>
+#include <climits>
 #include <algorithm>
 #include <math.h>
 #include <set>
@@ -125,8 +125,7 @@ public:
 
 
         #pragma omp declare reduction \
-          (rwz:int:omp_out=my_min(omp_out,omp_in)) \
-          initializer(omp_priv=best_decision_function)
+          (rwz:int:omp_out=my_min(omp_out,omp_in)) 
         for (int i = 0; i < feature_vals.size(); ++i) {
             Decision_Function curr_decision_function = get_feature_threshold_curr_feature(labels, weights,
                                                                                           feature_vals[i],
