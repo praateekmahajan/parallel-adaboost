@@ -11,7 +11,6 @@
 
 using namespace std;
 
-string FILENAME = "../data/100_200";
 int timeval_subtract (struct timeval * result, struct timeval * x, struct timeval * y)
 {
     /* Perform the carry for the later subtraction by updating y. */
@@ -38,24 +37,33 @@ int timeval_subtract (struct timeval * result, struct timeval * x, struct timeva
 
 
 int main(int argc, char** argv) {
-    //cout << "Hello, World!" ;
-
-//    cout << "You have entered " << argc
-//         << " arguments:" << "\n";
-
-    int t;
-
 //    for (int i = 0; i < argc; ++i)
 //        cout << argv[i] << "\n";
-
-    if(argc==3)
-        t=atoi(argv[2]);
-    else
-        t = 2;
 
     int num_threads =1;
     if(argc!=0)
         num_threads = atoi(argv[1]);
+
+    int t;
+    if(argc>=3)
+        t=atoi(argv[2]);
+    else
+        t = 2;
+
+    string num_egs;
+    string num_ft;
+    if (argc == 5)
+    {
+        num_egs = argv[3];
+        num_ft = argv[4];
+    }
+    else
+    {
+        num_egs = "100";
+        num_ft = "20";	     
+    }
+
+    string FILENAME = "../data/" + num_egs + "_" + num_ft;
 
     /* Variables for timing */
     struct timeval ta, tb, tresult;
@@ -73,8 +81,8 @@ int main(int argc, char** argv) {
     vector<vector<double> > X;
     vector<int> labels;
     // The data file, without labels and first row.
-    string dataf = FILENAME + "_data.csv");
-    ifstream data_file(dataf);
+    string dataf = FILENAME + "_data.csv";
+    ifstream data_file(dataf.c_str());
     string line;
 
     while (data_file.good()) {
@@ -96,7 +104,7 @@ int main(int argc, char** argv) {
 
     // Label file, expects, 1 and -1 as postive and negative labels
     string label = FILENAME + "_label.csv";
-    ifstream label_file(label);
+    ifstream label_file(label.c_str());
 
 
     while (label_file.good()) {
@@ -155,15 +163,15 @@ int main(int argc, char** argv) {
             acc++;
         }
     }
-    cout<<"\nAccuracy "<<acc/predictions.size();
-    cout<<"\n";
+    //cout<<"\nAccuracy "<<acc/predictions.size();
+    //cout<<"\n";
 
     /* get initial time */
     gettimeofday ( &tb, NULL );
 
     timeval_subtract ( &tresult, &tb, &ta );
 
-    printf ("%lu\t%lu\t%d\n", tresult.tv_sec, tresult.tv_usec, num_threads );
+    printf ("%s\t%s\t%d\t%d\t%lu\t%lu\n", num_egs.c_str(), num_ft.c_str(), num_threads, t, tresult.tv_sec, tresult.tv_usec);
 
     return 0;
 }
