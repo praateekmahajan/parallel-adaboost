@@ -1,5 +1,5 @@
-#ifndef ADABOOST_E_PARALLELL_H
-#define ADABOOST_E_PARALLELL_H
+#ifndef ADABOOST_BEST_H
+#define ADABOOST_BEST_H
 
 #include <iostream>
 #include <vector>
@@ -95,10 +95,10 @@ public:
         // Returns the best threshold for the current feature index
         Decision_Function best_feature_threshold;
 
-        #pragma omp declare reduction \
+        // #pragma omp declare reduction \
         (rwz:Decision_Function:omp_out=min_dec_function(omp_out,omp_in))
 
-        #pragma omp parallel for reduction(rwz:best_feature_threshold)
+        // #pragma omp parallel for reduction(rwz:best_feature_threshold)
         for (int i = 0; i < feature_thresholds.size(); ++i) {
             Decision_Function curr_feature_threshold = get_error_curr_feature_val(labels, weights, feature_vals,
                                                                              feature_thresholds[i],feat_index);
@@ -116,6 +116,10 @@ public:
         Decision_Stump best_feature_stump;
         Decision_Function best_decision_function;
 
+        #pragma omp declare reduction \
+        (rwz:Decision_Function:omp_out=min_dec_function(omp_out,omp_in))
+
+        #pragma omp parallel for reduction(rwz:best_decision_function)
 
         for (int i = 0; i < feature_vals.size(); ++i) {
             Decision_Function curr_decision_function = get_feature_threshold_curr_feature(labels, weights,
@@ -186,8 +190,10 @@ public:
 
     vector<vector<double> > get_feature_split_vals(vector<vector<double> > &feature_vals) {
         // Returns the unique midpoint threshold 2d vector for each feature.
-        vector<vector<double> > solution;
+        vector<vector<double> > solution(feature_vals.size());
         int i, j, k;
+
+        #pragma omp parallel for schedule(dynamic,1)
         for (i = 0; i < feature_vals.size(); ++i) {
             vector<double> v(feature_vals[i].begin(), feature_vals[i].end());
             sort(v.begin(), v.end());
@@ -202,7 +208,7 @@ public:
                 midpoint.push_back((v[j] + v[k]) / 2);
                 j = k;
             }
-            solution.push_back(midpoint);
+            solution[i]=midpoint;
         }
         return solution;
 
@@ -241,6 +247,8 @@ public:
         double alpha_t = ds.alpha_t;
         double weights_sum = 0;
 
+
+        #pragma omp parallel for reduction (+:weights_sum)
         for (int i = 0; i < weights.size(); ++i) {
             if (((feature_vals[i] <= ds.decision_function.threshold) and (ds.decision_function.direction == 1)) or
                 ((feature_vals[i] > ds.decision_function.threshold) and (ds.decision_function.direction == -1))) {
@@ -250,6 +258,7 @@ public:
             }
             weights_sum += weights[i];
         }
+        #pragma omp parallel for
         for (int i = 0; i < weights.size(); ++i) {
             weights[i] = weights[i] / weights_sum;
         }

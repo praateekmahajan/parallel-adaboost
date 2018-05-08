@@ -1,4 +1,4 @@
-#include "adaboost_e_parallel.h"
+#include "adaboost_best.h"
 #include <ctime>
 #include <iostream>
 #include <fstream>
