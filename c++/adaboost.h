@@ -42,7 +42,7 @@ Decision_Function my_min(Decision_Function curr_decision_function,Decision_Funct
     }
 }
 
-vector<vector<double> > transpose(vector<vector<double> > ds) {
+vector<vector<double> > transpose(vector<vector<double> > &ds) {
     //  Transposes the data set, done so that slicing feature wise is easier
     vector<vector<double> > tr(ds[0].size(), vector<double>(ds.size(), 0));
     for (int i = 0; i < ds.size(); ++i) {

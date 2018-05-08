@@ -127,7 +127,7 @@ int main(int argc, char** argv) {
         }
     }
     cout<<"\nAccuracy "<<acc/predictions.size();
-    cout<<"\n";
+    //cout<<"\n";
 
     /* get initial time */
     printf ("%s\t%s\t%d\t%d\t%lu\t%lu\n", num_egs.c_str(), num_ft.c_str(), num_threads, t, tresult.tv_sec, tresult.tv_usec);
