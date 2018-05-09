@@ -1,4 +1,4 @@
-#include "adaboost.h"
+#include "adaboost_best.h"
 #include <ctime>
 #include <iostream>
 #include <fstream>
@@ -126,7 +126,7 @@ int main(int argc, char** argv) {
             acc++;
         }
     }
-    cout<<"\nAccuracy "<<acc/predictions.size();
+    cout<<"Accuracy "<<acc/predictions.size();
     cout<<"\n";
 
     /* get initial time */
