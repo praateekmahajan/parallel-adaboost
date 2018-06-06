@@ -1,1 +1,3 @@
-Parallel
+Parallelizing AdaBoost on Multi Core Machines using open MP in C++
+
+AdaBoost, short for Adaptive Boosting, is a type of boosting algorithm which combines several weak classifiers to create one strong classifier. AdaBoosts fundamental nature doesn’t allow for parallelizing finding the weak classifiers, we present a way which helps achieve nearly 22.14x times the speedup compared to a serial implementaiton. In this paper, we develop a parallel AdaBoost algorithm that exploits the multiple cores in a CPU via light weight threads. We propose different algorithms for different types of datasets and machines.
